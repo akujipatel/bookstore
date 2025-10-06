@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Global Bookstore - Premium Amazon Bestsellers</title>
+    
+    <!-- Advanced SEO Meta Tags -->
+    <meta name="description" content="Discover premium Amazon bestsellers in USA, India, UK with filters for Fiction, Non-Fiction, Self-Help, Business. SEO-optimized affiliate bookstore for passive income.">
+    <meta name="keywords" content="amazon bestsellers, affiliate bookstore, fiction non-fiction self-help business, usa india uk, passive income">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Elite Global Book Affiliate">
+    <meta property="og:title" content="Elite Global Bookstore - Premium Amazon Bestsellers">
+    <meta property="og:description" content="Curated Amazon bestsellers with country-specific affiliate links. Filter by category for a premium experience.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourusername.github.io/bookstore/">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/1a1a1a/FFFFFF?text=Elite+Bookstore">
+    
+    <!-- Structured Data for SEO (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Elite Global Bookstore",
+        "url": "https://yourusername.github.io/bookstore/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yourusername.github.io/bookstore/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --dark-mode-bg: #121212;
+            --dark-mode-text: #f8f9fa;
+            --dark-mode-card: #1e1e1e;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--primary-gradient);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            color: #fff;
+        }
+        body.dark-mode {
+            background: var(--dark-mode-bg);
+            color: var(--dark-mode-text);
+        }
+        .hero-section {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--secondary-gradient);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .hero-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .book-card {
+            transition: all 0.4s ease;
+            border: none;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        body.dark-mode .book-card {
+            background: var(--dark-mode-card);
+            color: var(--dark-mode-text);
+        }
+        .book-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+        .book-img {
+            height: 350px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--secondary-gradient);
+        }
+        .loading {
+            text-align: center;
+            padding: 60px;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2a5298;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .country-modal .modal-content {
+            background: var(--primary-gradient);
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .category-filters {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        body.dark-mode .category-filters {
+            background: rgba(255,255,255,0.1);
+        }
+        .category-btn {
+            margin: 0.3rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        .category-btn.active {
+            background: var(--secondary-gradient);
+            border-color: transparent;
+            color: white;
+        }
+        .carousel-item img {
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .newsletter {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1050;
+            background: rgba(0,0,0,0.5);
+            border: none;
+        }
+        footer {
+            background: var(--dark-mode-bg);
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        .animate__fadeIn {
+            animation: fadeIn 1s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="btn btn-outline-light dark-mode-toggle rounded-circle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Country Selection Modal -->
+    <div class="modal fade country-modal" id="countryModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title"><i class="fas fa-globe"></i> Select Your Country</h5>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="mb-4">Shop premium Amazon bestsellers tailored to your region with exclusive affiliate links.</p>
+                    <div class="btn-group-vertical w-100" role="group">
+                        <button class="btn btn-primary mb-2" onclick="selectCountry('us')"><i class="fas fa-flag-usa"></i> USA</button>
+                        <button class="btn btn-success mb-2" onclick="selectCountry('in')"><i class="fas fa-flag-in"></i> India</button>
+                        <button class="btn btn-info mb-2" onclick="selectCountry('uk')"><i class="fas fa-flag-gb"></i> UK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <!-- Hero Section with Carousel -->
+                <div class="hero-section mb-5">
+                    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://via.placeholder.com/1200x400/1e3c72/FFFFFF?text=Discover+Bestsellers" class="d-block w-100" alt="Bestsellers">
+                                <div class="carousel-caption">
+                                    <h1 class="display-3 fw-bold"><i class="fas fa-book-open"></i> Elite Global Bookstore</h1>
+                                    <p class="lead fs-4">Premium Bestsellers with Category Filters</p>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://via.placeholder.com/1200x400/2a5298/FFFFFF?text=Shop+Premium+Books" class="d-block w-100" alt="Premium Books">
+                                <div class="carousel-caption">
+                                    <h1 class="display-3 fw-bold"><i class="fas fa-star"></i> Exclusive Deals</h1>
+                                    <p class="lead fs-4">Earn Passive Income with Amazon Affiliates</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <button class="btn btn-light btn-lg mt-4 animate__fadeIn" onclick="loadBooks()"><i class="fas fa-search"></i> Explore Bestsellers</button>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="category-filters mb-4 animate__fadeIn">
+                    <h5 class="text-white mb-3"><i class="fas fa-filter"></i> Filter by Category</h5>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-light category-btn active" data-category="all" onclick="filterCategory('all')">All</button>
+                        <button class="btn btn-outline-light category-btn" data-category="fiction" onclick="filterCategory('fiction')">Fiction</button>
+                        <button class="btn btn-outline-light category-btn" data-category="nonfiction" onclick="filterCategory('nonfiction')">Non-Fiction</button>
+                        <button class="btn btn-outline-light category-btn" data-category="selfhelp" onclick="filterCategory('selfhelp')">Self-Help</button>
+                        <button class="btn btn-outline-light category-btn" data-category="business" onclick="filterCategory('business')">Business</button>
+                    </div>
+                </div>
+
+                <!-- Books Grid -->
+                <div id="booksContainer" class="row g-4">
+                    <div class="col-12">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <p class="text-white mt-3">Loading bestsellers... Select a country to begin!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Newsletter Signup -->
+                <div class="newsletter text-center text-white mt-5 animate__fadeIn">
+                    <h4><i class="fas fa-envelope"></i> Stay Updated</h4>
+                    <p class="mb-3">Get weekly bestseller recommendations and deals.</p>
+                    <div class="input-group w-50 mx-auto">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary"><i class="fas fa-paper-plane"></i> Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-white text-center py-4">
+        <p>&copy; 2025 Elite Global Bookstore. Powered by Amazon Affiliates | <a href="#" class="text-white">Privacy Policy</a> | <a href="#" class="text-white">Terms</a></p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Global Variables
+        let selectedCountry = null;
+        let selectedCategory = 'all';
+        const amazonDomains = {
+            'us': 'amazon.com',
+            'in': 'amazon.in',
+            'uk': 'amazon.co.uk'
+        };
+        const affiliateTags = {
+            'us': 'akujipatel07-20', // Your USA tag
+            'in': 'akujipatelblo-21', // Your India tag
+            'uk': 'akujipatel0b-21'   // Your UK tag
+        };
+
+        // Static Bestseller List (Curated from Amazon Bestsellers, October 2025)
+        const bestsellers = [
+            {
+                title: "The Women: A Novel",
+                authors: ["Kristin Hannah"],
+                description: "An intimate portrait of coming of age in a dangerous time.",
+                image: "https://m.media-amazon.com/images/I/91mP3553EeL.jpg",
+                asin: "1250178630",
+                category: "fiction"
+            },
+            {
+                title: "Fourth Wing (The Empyrean, 1)",
+                authors: ["Rebecca Yarros"],
+                description: "Enter the brutal world of Basgiath War College.",
+                image: "https://m.media-amazon.com/images/I/91n7p-j5aqL.jpg",
+                asin: "1649374046",
+                category: "fiction"
+            },
+            {
+                title: "The Anxious Generation",
+                authors: ["Jonathan Haidt"],
+                description: "How the Great Rewiring of Childhood affects mental health.",
+                image: "https://m.media-amazon.com/images/I/81GAv5N4Z0L.jpg",
+                asin: "0593655036",
+                category: "nonfiction"
+            },
+            {
+                title: "Atomic Habits",
+                authors: ["James Clear"],
+                description: "Build good habits and break bad ones with proven strategies.",
+                image: "https://m.media-amazon.com/images/I/81kY4mG17iL.jpg",
+                asin: "0735211299",
+                category: "selfhelp"
+            },
+            {
+                title: "The Psychology of Money",
+                authors: ["Morgan Housel"],
+                description: "Timeless lessons on wealth, greed, and happiness.",
+                image: "https://m.media-amazon.com/images/I/81Z3oV-hgAL.jpg",
+                asin: "0857197681",
+                category: "business"
+            },
+            {
+                title: "It Ends With Us",
+                authors: ["Colleen Hoover"],
+                description: "A novel about love, sacrifice, and tough choices.",
+                image: "https://m.media-amazon.com/images/I/81s3oW41f6L.jpg",
+                asin: "1501110365",
+                category: "fiction"
+            },
+            {
+                title: "Verity",
+                authors: ["Colleen Hoover"],
+                description: "A chilling thriller about a struggling writer.",
+                image: "https://m.media-amazon.com/images/I/91H4g68pGZL.jpg",
+                asin: "1538724731",
+                category: "fiction"
+            },
+            {
+                title: "Think Again",
+                authors: ["Adam Grant"],
+                description: "The power of knowing what you don't know.",
+                image: "https://m.media-amazon.com/images/I/81A6+5XcfHL.jpg",
+                asin: "1984878107",
+                category: "business"
+            }
+        ];
+
+        // Show modal on page load
+        window.onload = function() {
+            const modal = new bootstrap.Modal(document.getElementById('countryModal'));
+            modal.show();
+        };
+
+        // Select Country Function
+        function selectCountry(country) {
+            selectedCountry = color;
+            const modal = bootstrap.Modal.getInstance(document.getElementById('countryModal'));
+            modal.hide();
+            loadBooks();
+            document.title = `Elite Bookstore - ${color.toUpperCase()} Premium Edition`;
+        }
+
+        // Filter Category
+        function filterCategory(category) {
+            selectedCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            loadBooks();
+        }
+
+        // Load Books Function
+        function loadBooks() {
+            const container = document.getElementById('booksContainer');
+            const loadingDiv = container.querySelector('.loading');
+            if (loadingDiv) loadingDiv.style.display = 'block';
+
+            try {
+                container.innerHTML = '';
+                const books = bestsellers.filter(book => selectedCategory === 'all' || book.category === selectedCategory);
+                if (books.length === 0) throw new Error('No books found for this category');
+                
+                books.forEach(book => {
+                    const card = createBookCard(book);
+                    card.classList.add('animate__fadeIn');
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error loading books:', error.message);
+                container.innerHTML = '<div class="col-12"><div class="alert alert-warning text-center">No books available for this category. Try another filter or refresh.</div></div>';
+            } finally {
+                if (loadingDiv) loadingDiv.style.display = 'none';
+            }
+        }
+
+        // Create Book Card
+        function createBookCard(bookInfo) {
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-4';
+            
+            const amazonUrl = `https://www.${amazonDomains[selectedCountry]}/dp/${bookInfo.asin}?tag=${affiliateTags[selectedCountry]}`;
+            
+            col.innerHTML = `
+                <div class="card book-card h-100">
+                    <img src="${bookInfo.image || 'https://via.placeholder.com/300x350/1e3c72/FFFFFF?text=No+Image'}" 
+                         class="card-img-top book-img" alt="${bookInfo.title}" 
+                         loading="lazy" onerror="this.src='https://via.placeholder.com/300x350/1e3c72/FFFFFF?text=No+Image'">
+                    <div class="card-body d-flex flex-column p-4">
+                        <h5 class="card-title fw-bold mb-2">${bookInfo.title}</h5>
+                        <p class="card-text flex-grow-1 text-muted">${bookInfo.description ? bookInfo.description.substring(0, 150) + '...' : 'Discover this bestseller.'}</p>
+                        <p class="text-primary"><i class="fas fa-user"></i> ${bookInfo.authors ? bookInfo.authors.join(', ') : 'Featured Author'}</p>
+                        <a href="${amazonUrl}" target="_blank" class="btn btn-primary mt-auto stretched-link" rel="nofollow noopener">
+                            <i class="fab fa-amazon"></i> Buy on Amazon ${selectedCountry.toUpperCase()}
+                        </a>
+                    </div>
+                </div>
+            `;
+            return col;
+        }
+
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.dark-mode-toggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        }
+
+        // SEO: Canonical
+        const link = document.createElement('link');
+        link.rel = 'canonical';
+        link.href = 'https://akujipatel.github.io/bookstore/';
+        document.head.appendChild(link);
+    </script>
+</body>
+</html>
